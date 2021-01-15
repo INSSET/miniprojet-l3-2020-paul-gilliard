@@ -1,0 +1,127 @@
+{% extends "base.html.twig" %}
+{% block body %}
+{#
+
+
+
+ {{ dump(tableauDeTousLesFormes) }}
+{% if app.user.roles[0] == 1 %}
+<h1> Salut l'admin </h1>
+<br>
+{% for user in tableauDeTousLesFormes %}
+
+    {{ user[1].username }} --> <a href="/product/new/deleteUser/{{user[1].username}}/{{ user[1].id }}" onclick="return confirm('T\'es sur de vouloir delete ce compte et le contenu du répertoire  ?')"> Supprimer le compte</a><br>
+    {{ form_start(user[0]) }}
+    {{ form_widget(user[0]) }}
+    <button type="submit" class="btn" style="padding:6px 0 6px 0;
+	font:bold 13px Arial;
+	background:#478bf9;
+	color:#fff;
+	border-radius:2px;
+	width:200px;
+	border:none;">Modifier l'abonnement</button>
+    {{ form_end(user[0]) }}
+{% endfor %}
+
+
+
+{% else %}
+#}
+<br><br><br>
+<h1>Le contenu de votre drive </h1>
+
+{#  {{ dump(cheminDossierUser) }}
+{{ dump(filesPath) }}#}
+
+<h2> Stockage Restant :  {{ StockageRestant }} KB</h2>
+
+{% for user1 in filesPath%}
+
+{% for key,value in user1 %}
+
+
+
+         {% if('racine' in key) %}
+
+{{ key }} <a href="/product/new/it/{{ key }}" onclick="ShowUpload"> <srong>Ajouter Dossier ou Fichier</srong>   </a>  Il contient {{ value }} Files
+
+{% elseif ('Directory' in key) %}
+<br><br><li>
+    {{ key }}  <a href="/product/new/it/{{ key }}"> <srong>Ajouter Fichier</srong> </a> | <a href="/product/new/it/{{ key }}"> <srong>Ajouter Dossier</srong>   </a> |
+        <a href="/product/new/deleteDir/{{ key }}"onclick="return confirm('T\'es sur de vouloir delete ce répertoire et son contenu ?')"> Supprimer Dossier </a> Il contient {{ value }} Files
+
+
+        {% elseif ('File' in key) %}
+
+            <a href="/product/new/{{ url }}{{ key }}"> {{ key }}  </a> {{ value }} --> <a href="/product/new/delete/{{ key }}"onclick="return confirm('T\'es sur de vouloir delete ce fichier ?')"> <srong>Delete</srong>   </a>
+
+        {% endif %}
+        <br><br>
+
+
+{% endfor %}
+        {% endfor %}
+{#
+        {% for user in user1 %}
+
+         {% if('racine' in user) %}
+
+{{ user }} <a href="/product/new/it/{{ user }}" onclick="ShowUpload"> <srong>Ajouter Dossier ou Fichier</srong>    </a>
+
+        {% elseif ('Directory' in user) %}
+<br><br><li>
+            {{ user }}  <a href="/product/new/it/{{ user }}"> <srong>Ajouter Fichier</srong>  <a href="/product/new/it/{{ user }}"> <srong>Ajouter Dossier</srong>   </a>
+            <a href="/product/new/deleteDir/{{ user }}"onclick="return confirm('T\'es sur de vouloir delete ce répertoire et son contenu ?')"> --- </a>
+
+
+        {% elseif ('File' in user) %}
+
+        <a href="/product/new/{{ url }}{{ user }}"> {{ user }}  </a> --> <a href="/product/new/delete/{{ user }}"onclick="return confirm('T\'es sur de vouloir delete ce fichier ?')"> <srong>Delete</srong>   </a>
+
+        {% endif %}
+        <br><br>
+
+    {% endfor %}
+{% endfor %}
+
+
+#}
+{% block Form %}
+    {% form_theme form 'bootstrap_3_horizontal_layout.html.twig'%}
+    {% if AfficherAjoutFichier == true %}
+
+<h3>Ajout d'un fichier dans {{ endroitAdding }}</h3>
+
+    {{ form_start(form) }}
+    {{ form_row(form.brochure) }}
+    <button type="submit" style="padding:6px 0 6px 0;
+	font:bold 13px Arial;
+	background:#478bf9;
+	color:#fff;
+	border-radius:2px;
+	width:100px;
+	border:none;">Upload</button>
+    {{ form_end(form) }}
+
+    {% endif %}
+<br><br><br>
+    {% if AfficherAjoutDossier == true %}
+
+
+    <h3>Ajout d'un nouveau dossier dans {{ endroitAddingDossier }}</h3>
+    {{ form_start(formMkdir) }}
+    {{ form_row (formMkdir.nameDir )}}
+    <button type="submit" style="padding:6px 0 6px 0;
+	font:bold 13px Arial;
+	background:#478bf9;
+	color:#fff;
+	border-radius:2px;
+	width:100px;
+	border:none;">créer le dossier</button>
+    {{ form_end(formMkdir) }}
+
+
+    {% endif %}
+
+{% endblock %}
+    {% endblock %}
