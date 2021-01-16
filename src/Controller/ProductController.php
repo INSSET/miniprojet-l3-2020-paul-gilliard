@@ -40,53 +40,6 @@ class ProductController extends AbstractController
 
         $stockage = $this->getUser()->getFormule();
 
-        /*  if ($form->isSubmitted() && $form->isValid()) {
-              /** @var UploadedFile $brochureFile
-              $brochureFile = $form->get('brochure')->getData();
-
-              // this condition is needed because the 'brochure' field is not required
-              // so the PDF file must be processed only when a file is uploaded
-
-
-              if ($brochureFile) {
-
-                  /* $fileUploader =null;
-                   $brochureFileName = $fileUploader->upload($brochureFile);
-                   $product->setBrochureFilename($brochureFileName);
-
-                  $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                  // this is needed to safely include the file name as part of the URL
-                  $safeFilename = $slugger->slug($originalFilename);
-                  $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
-
-                  // Move the file to the directory where brochures are stored
-                  try {
-                      $Debut = $this->getParameter('brochures_directory');
-                      $nomUser = $this->getUser()->getUsername();
-                      $Debut = $Debut . '/' . $nomUser;
-                      $brochureFile->move(
-                      // $this->getParameter('brochures_directory'),
-                          $Debut,
-                          $newFilename
-                      );
-                  } catch (FileException $e) {
-                      // ... handle exception if something happens during file upload
-                  }
-
-                  // updates the 'brochureFilename' property to store the PDF file name
-                  // instead of its contents
-                  $product->setBrochureFilename($newFilename);
-              }
-
-              // ... persist the $product variable or any other work
-
-              return $this->forward('App\Controller\ProductController::new');
-
-             // return $this->redirectToRoute('app_product_new_upload"');
-          } */
-
-
-        //$nameDir = $this->getParameter('kernel.project_dir').'/public';
         $nomUser = $this->getUser()->getUsername();
         $cheminDossierUser = $this->getParameter('kernel.project_dir') . '/public/' . $nomUser;
 
@@ -216,91 +169,7 @@ class ProductController extends AbstractController
             }
             $Folder[$i] = $tableauAsso;
         }
-        //  var_dump($Folder);
-        //  var_dump($Folder);
 
-        /*
-                $filesPath[]=["racine"."Directory"];
-                $aParcourirALaFin=[];
-                foreach ($iterator as $file) {
-
-                    $test = $file->getPathname();
-                    $test2=$file->getFilename();
-
-                    $aEnlever= $this->getParameter('kernel.project_dir') . '/public/' . $nomUser;
-                    $test = str_replace($aEnlever, "", $test);
-                    $test = str_replace("/", "|", $test);
-                    if($test2 != '..' && $test2 != '.' ) {
-
-                        $nombreBarre = substr_count($test,'|');
-
-                        if(is_dir($file)) {
-
-                             {
-                                 if(array_key_exists($nombreBarre, $filesPath)) {
-                                     $filesPath[$nombreBarre][] =  $filesPath[$nombreBarre];
-                                    array_shift($filesPath[$nombreBarre]);
-                                     $filesPath[$nombreBarre][] = [$test . "Directory"];
-
-                                 }
-                                 else {
-
-                                     $filesPath[$nombreBarre] = [$test . "Directory"];
-                                 }
-                            }
-                        }
-                        else{
-
-                            if(array_key_exists($nombreBarre, $filesPath) )
-                            {
-
-                                $filesPath[$nombreBarre-1][] = $test."File";
-                            }
-                            else
-                            {
-                                $aParcourirALaFin[]= $test."File";
-
-                            }
-                         //   $filesPath[$nombreBarre] = [$test."File"];
-                        }
-                    }
-                }
-
-                   foreach ($aParcourirALaFin as $fichierRestant)
-                 {
-                      $nombreBarre = substr_count($fichierRestant,'|');
-
-
-                      if(array_key_exists($nombreBarre-1, $filesPath) )
-                      {
-                          $nbElement=count($filesPath[$nombreBarre-1]);
-                          for ($i=0;$i<$nbElement;$i++)
-                          {
-        print"yoyoyo";
-                              $chaineATest=$filesPath[$nombreBarre-1][$i][0];
-                              print ($chaineATest);
-                              print"yoyoyo";
-                              //$chaineATest=strval($chaineATest);
-                              $chaineATest=substr($chaineATest,0,-9);
-
-                              if (str_contains($fichierRestant,$chaineATest) AND is_array($filesPath[$nombreBarre-1][$i]))
-                              {
-                                  $filesPath[$nombreBarre-1][$i][]=$fichierRestant;
-                              }
-                          }
-
-
-
-                        //$filesPath[$nombreBarre-1][]=$fichierRestant;
-                    }
-                }*/
-
-        /*  while($element = readdir($dir)) {
-              if($element != '..' && $element != '.' ) {
-                  if (is_dir($element))
-                      $files[] = $element;
-              }
-          }*/
         closedir($dir);
 
 
@@ -402,8 +271,6 @@ class ProductController extends AbstractController
 
                     $stockage = $user->getActuelStockage();
                     $tailleFichierSupp = filesize($element);
-                    var_dump($dir);
-                    var_dump($tailleFichierSupp);
                     $user->setActuelStockage($stockage + $tailleFichierSupp);
 
                     unlink($element);
@@ -427,7 +294,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/new/deleteUser/{path}/{id}", name="app_product_delete_dir")
+     * @Route("/product/new/deleteUser/{path}/{id}", name="app_product_delete_user")
      */
     public function deleteUser($path,$id,UserRepository $userRepository)
     {

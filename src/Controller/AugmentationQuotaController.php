@@ -36,37 +36,15 @@ class AugmentationQuotaController extends AbstractController
             $em->persist($this->getUser());
             $em->flush();
 
-            $mail = (new Email())
-                ->from('paul.gilliard.8@gmail.com')
-                ->to('paul.gilliard.8@gmail.com')
-                //->cc('cc@example.com')
-                //->bcc('bcc@example.com')
-                //->replyTo('fabien@example.com')
-                //->priority(Email::PRIORITY_HIGH)
-                ->subject('Time for Symfony Mailer!')
-                ->text('Sending emails is fun again!')
-                ->html('<p>See Twig integration for better HTML integration!</p>');
+            return $this->render('mail/index.html.twig',[
+                "formuleChoisi" => $formuleChoisi,
+                'formuleActuelle' => $formuleActuelle
 
-          /*  $mail = (new \Swift_Message('Bienvenue dans notre Site !'))
-                // On attribue l'expéditeur
-                ->setFrom('paul.gilliard.8@gmail.com')
-                // On attribue le destinataire
-                ->setTo('paul.gilliard.8@gmail.com')
-                // On crée le texte avec la vue
-                ->setBody(
-                    'text/html'
-                )
-            ;*/
-        
-             $mail->Host = 'smtp.gmail.com:587';
-            //   dd($mail);
-
-            $mailer->send($mail);
-
-            return $this->forward('App\Controller\ProductController::new');
+            ]);
         }
         return $this->render('augmentation_quota/index.html.twig', [
             'formUpgrade' => $formUpgrade->createView(),
+
         ]);
     }
 }

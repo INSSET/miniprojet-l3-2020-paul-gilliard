@@ -6,7 +6,8 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-<center>
+    <center>
+        
     <h1>Inscription</h1>
     {% form_theme registrationForm 'bootstrap_3_layout.html.twig'%}
     {{ form_start(registrationForm) }}

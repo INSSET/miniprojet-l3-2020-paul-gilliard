@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $user->setActuelStockage($user->getFormule());
+            $user->setActuelStockage($user->getFormule()*100000);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

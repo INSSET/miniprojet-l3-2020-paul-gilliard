@@ -3,7 +3,13 @@ app_product_delete :
     controller: App\Controller\ProductController::deleteAction
     methods : GET|HEAD
 
-app_product_delete_dir :
+app_product_delete_user :
     path: /product/new/deleteUser/{path}/{id}
     controller: App\Controller\ProductController::deleteUser
     methods: GET|HEAD
+
+app_product_delete_dir :
+    path: /product/new/deleteDir/{path}
+    controller: App\Controller\ProductController::deleteActionDir
+    methods: GET|HEAD
+
