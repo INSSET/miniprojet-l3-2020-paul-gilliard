@@ -21,26 +21,31 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() ) {
+            $captcha = $_POST["g-recaptcha-response"];
+            $secretkey = "6LfJYTAaAAAAADgk7o8hVWTvxA3wwWPDuf0nVzKh";
+            $url = "https://www.google.com/recaptcha/api/siteverify?secret=" . urlencode($secretkey) . "&response=" . urlencode($captcha) . " ";
+            $response = file_get_contents($url);
+            $responsekey = json_decode($response, TRUE);
             // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            if ($responsekey['success'] && $form->isValid()) {
+                $user->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
 
-            $user->setActuelStockage($user->getFormule()*100000);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
+                $user->setActuelStockage($user->getFormule() * 100000);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+                // do anything else you need here, like send an email
 
-            
 
-            return $this->redirectToRoute('connection');
+                return $this->redirectToRoute('connection');
+            }
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
